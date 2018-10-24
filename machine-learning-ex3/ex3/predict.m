@@ -21,13 +21,23 @@ p = zeros(size(X, 1), 1);
 %       can use max(A, [], 2) to obtain the max for each row.
 %
 
+% Adding bias to each datapoint in first/input layer
+a1 = [ones(m,1) X];
 
+% Computing the output of second layer
+z1 = a1 * Theta1';
 
+% Adding bias to each datapoint in second layer
+a2 = [ones(size(z1),1) sigmoid(z1)];
 
+% Computing the output of third layer
+a3 = sigmoid(a2 * Theta2');
 
+% Getting the precidicted label by taking the max score of of the labels
+[max_val , p] =max(a3,[],2);
 
-
-
+% Changing label '10' as '0'
+% p = mod(p,10);
 
 % =========================================================================
 
