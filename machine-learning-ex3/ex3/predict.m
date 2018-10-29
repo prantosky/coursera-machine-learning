@@ -24,14 +24,15 @@ p = zeros(size(X, 1), 1);
 % Adding bias to each datapoint in first/input layer
 a1 = [ones(m,1) X];
 
-% Computing the output of second layer
 z1 = a1 * Theta1';
 
 % Adding bias to each datapoint in second layer
 a2 = [ones(size(z1),1) sigmoid(z1)];
 
+z2 = a2 * Theta2'
+
 % Computing the output of third layer
-a3 = sigmoid(a2 * Theta2');
+a3 = sigmoid(z2);
 
 % Getting the precidicted label by taking the max score of of the labels
 [max_val , p] =max(a3,[],2);
