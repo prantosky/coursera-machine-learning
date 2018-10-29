@@ -38,7 +38,7 @@ numgrad = computeNumericalGradient(costFunc, nn_params);
 % you get should be very similar. 
 disp([numgrad grad]);
 fprintf(['The above two columns you get should be very similar.\n' ...
-         '(Left-Your Numerical Gradient, Right-Analytical Gradient)\n\n']);
+         '(Right-Your Numerical Gradient, Left-Analytical Gradient)\n\n']);
 
 % Evaluate the norm of the difference between two solutions.  
 % If you have a correct implementation, and assuming you used EPSILON = 0.0001 

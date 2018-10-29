@@ -62,20 +62,37 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+% Forward Propogation
+a1 = [ones(m,1) X];  % size(a1) = 5000 401
 
+z1 = a1 * Theta1';   % size(z1) = 5000 25
 
+a2 = [ones(size(z1),1) sigmoid(z1)];   % size(a2) = 5000 26
 
+z2 = a2 * Theta2';   % size(z2) = 5000 10
 
+a3 = sigmoid(z2);   % size(a3) = 5000 10
 
+% Cost Function
 
+Theta1_new = Theta1(:,2:end);
+Theta2_new = Theta2(:,2:end);
 
+J = (1/m) * sum(sum((-y .* log(a3) - (1-y) .* log(1-a3)),2)) 
+		+ (lambda/(2*m)) * (sum(sum(Theta1_new.^2,2),1) + sum(sum(Theta2_new.^2,2)));
 
+% Calculating the gradients
 
+g_prime = [zeros(size(z1),1) sigmoidGradient(z1)];
 
+del_3 = a3 - y;  % size(del_3) = 5000 10
 
+del_2 = (del_3 * Theta2) .* g_prime;  % size(del_2) = 5000 26
+del_2 = del_2(:,2:end);
 
+Theta2_grad = Theta2_grad + del_3' * a2;
 
-
+Theta1_grad = Theta1_grad + del_2' * a1;
 
 
 
