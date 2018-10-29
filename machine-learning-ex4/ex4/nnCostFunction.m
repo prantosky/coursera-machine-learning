@@ -62,6 +62,14 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+vec_y = zeros(size(y),num_labels);
+
+ind = [ 1:size(y) ; y']';
+linear_ind = sub2ind([size(vec_y)],ind(:,1),ind(:,2));
+vec_y = vec_y(:);
+vec_y(linear_ind) = 1;
+y = reshape(vec_y,size(y),num_labels);
+
 % Forward Propogation
 a1 = [ones(m,1) X];  % size(a1) = 5000 401
 
