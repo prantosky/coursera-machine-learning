@@ -86,23 +86,22 @@ a3 = sigmoid(z2);   % size(a3) = 5000 10
 Theta1_new = Theta1(:,2:end);
 Theta2_new = Theta2(:,2:end);
 
-J = (1/m) * sum(sum((-y .* log(a3) - (1-y) .* log(1-a3)),2)) 
-		+ (lambda/(2*m)) * (sum(sum(Theta1_new.^2,2),1) + sum(sum(Theta2_new.^2,2)));
+J = (1/m) .* sum(sum((-y .* log(a3) - (1-y) .* log(1 - a3)),2)) ...
+		+ (lambda/(2*m)) .* (sum(sum(Theta1_new .^ 2, 2)) + sum(sum(Theta2_new .^ 2, 2)));
+
 
 % Calculating the gradients
 
-g_prime = [zeros(size(z1),1) sigmoidGradient(z1)];
+g_prime = sigmoidGradient(z1);
+
 
 del_3 = a3 - y;  % size(del_3) = 5000 10
 
-del_2 = (del_3 * Theta2) .* g_prime;  % size(del_2) = 5000 26
-del_2 = del_2(:,2:end);
+del_2 = (del_3 * Theta2_new) .* g_prime;  % size(del_2) = 5000 26
 
-Theta2_grad = Theta2_grad + del_3' * a2;
+Theta2_grad = Theta2_grad + (1/m) .* del_3' * a2 + lambda/m .* [zeros(size(Theta2_new),1) Theta2_new];
 
-Theta1_grad = Theta1_grad + del_2' * a1;
-
-
+Theta1_grad = Theta1_grad + (1/m) .* del_2' * a1 + lambda/m .* [zeros(size(Theta1_new),1) Theta1_new];
 
 
 % -------------------------------------------------------------
