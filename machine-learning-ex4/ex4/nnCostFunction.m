@@ -62,45 +62,42 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+% Converting the vector y from vaector of labels to binary vector of 1's and 0's
 vec_y = zeros(size(y),num_labels);
 
-ind = [ 1:size(y) ; y']';
-linear_ind = sub2ind([size(vec_y)],ind(:,1),ind(:,2));
-vec_y = vec_y(:);
-vec_y(linear_ind) = 1;
-y = reshape(vec_y,size(y),num_labels);
+ind = [ 1:size(y) ; y']';   							% All the subscript-indices where 1 is to be set
+linear_ind = sub2ind([size(vec_y)],ind(:,1),ind(:,2));  % Converting subscript-indices to linear indices
+vec_y = vec_y(:);   									% Converting to column vector
+vec_y(linear_ind) = 1;   								
+y = reshape(vec_y,size(y),num_labels);					% Reshaping back to the original dimentions
 
 % Forward Propogation
-a1 = [ones(m,1) X];  % size(a1) = 5000 401
+a1 = [ones(m,1) X];
 
-z1 = a1 * Theta1';   % size(z1) = 5000 25
+z2 = a1 * Theta1';
 
-a2 = [ones(size(z1),1) sigmoid(z1)];   % size(a2) = 5000 26
+a2 = [ones(size(z2),1) sigmoid(z2)];
 
-z2 = a2 * Theta2';   % size(z2) = 5000 10
+z3 = a2 * Theta2';
 
-a3 = sigmoid(z2);   % size(a3) = 5000 10
+a3 = sigmoid(z3);
+
 
 % Cost Function
-
-Theta1_new = Theta1(:,2:end);
-Theta2_new = Theta2(:,2:end);
+Theta1_new = Theta1(:,2:end);		% Removing the weights associated with bias terms
+Theta2_new = Theta2(:,2:end);		% Removing the weights associated with bias terms
 
 J = (1/m) .* sum(sum((-y .* log(a3) - (1-y) .* log(1 - a3)),2)) ...
 		+ (lambda/(2*m)) .* (sum(sum(Theta1_new .^ 2, 2)) + sum(sum(Theta2_new .^ 2, 2)));
 
 
 % Calculating the gradients
+g_prime = sigmoidGradient(z2);
 
-g_prime = sigmoidGradient(z1);
-
-
-del_3 = a3 - y;  % size(del_3) = 5000 10
-
-del_2 = (del_3 * Theta2_new) .* g_prime;  % size(del_2) = 5000 26
+del_3 = a3 - y;
+del_2 = (del_3 * Theta2_new) .* g_prime;
 
 Theta2_grad = Theta2_grad + (1/m) .* del_3' * a2 + lambda/m .* [zeros(size(Theta2_new),1) Theta2_new];
-
 Theta1_grad = Theta1_grad + (1/m) .* del_2' * a1 + lambda/m .* [zeros(size(Theta1_new),1) Theta1_new];
 
 
