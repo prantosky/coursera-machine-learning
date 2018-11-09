@@ -19,15 +19,17 @@ grad = zeros(size(theta));
 %               You should set J to the cost and grad to the gradient.
 %
 
+% Compute the predictions
+h_x = X * theta;
 
+% Create a new array with no regulaization for the bias term
+theta_new = [0 ; theta(2:end)];
 
+% Compute the cost
+J = (1/(2*m)) .* ((h_x - y)' * (h_x - y)) + (lambda/(2*m)) .* (theta_new' * theta_new);
 
-
-
-
-
-
-
+% Compute the gradients
+grad =  (1/m) .* (X' * (h_x - y))   + (lambda/m) .* theta_new;
 
 
 % =========================================================================
