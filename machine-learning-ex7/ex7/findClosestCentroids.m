@@ -21,12 +21,11 @@ idx = zeros(size(X,1), 1);
 % Note: You can use a for-loop over the examples to compute this.
 %
 
-
-
-
-
-
-
+i = 1;
+for x = X'
+	distances = sum((x'-centroids).^2,2);
+	[max_distances, idx(i)] = min(distances);
+	i += 1;
 % =============================================================
 
 end
