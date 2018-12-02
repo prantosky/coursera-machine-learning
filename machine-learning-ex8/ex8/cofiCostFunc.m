@@ -1,5 +1,5 @@
 function [J, grad] = cofiCostFunc(params, Y, R, num_users, num_movies, ...
-                                  num_features, lambda)
+								  num_features, lambda)
 %COFICOSTFUNC Collaborative filtering cost function
 %   [J, grad] = COFICOSTFUNC(params, Y, R, num_users, num_movies, ...
 %   num_features, lambda) returns the cost and gradient for the
@@ -9,9 +9,9 @@ function [J, grad] = cofiCostFunc(params, Y, R, num_users, num_movies, ...
 % Unfold the U and W matrices from params
 X = reshape(params(1:num_movies*num_features), num_movies, num_features);
 Theta = reshape(params(num_movies*num_features+1:end), ...
-                num_users, num_features);
+				num_users, num_features);
 
-            
+			
 % You need to return the following values correctly
 J = 0;
 X_grad = zeros(size(X));
@@ -40,20 +40,14 @@ Theta_grad = zeros(size(Theta));
 %                     partial derivatives w.r.t. to each element of Theta
 %
 
+% Calculating the error
+J = 1/2 * sum((((X * Theta') .* R - Y).^2)(:)) + sum((lambda/2) .* (Theta.^2)(:)) + sum((lambda/2) .* (X.^2)(:));
 
+% Calculating X_grad
+X_grad = ((X * Theta' - Y) .*R ) * Theta + lambda .* X;
 
-
-
-
-
-
-
-
-
-
-
-
-
+% Calculating Theta_grad
+Theta_grad = ((X * Theta' - Y).* R)' * X + lambda .* Theta;
 
 % =============================================================
 
